@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useState } from "react";
+import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -12,11 +14,19 @@ import Typography from "@mui/material/Typography";
 import { Paper } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import useInput from "../hooks/use-input";
-import { signupInitiate } from "../Redux/Action/actions";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { loginHandler } from "../Redux/Action/actions";
+import { makeStyles } from "@material-ui/core";
 
 const theme = createTheme();
-
+const useStyles = makeStyles({
+  progress: {
+    color: "#FFFFFF",
+  },
+});
 export default function SignUpPage() {
+  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     hasError: usernameHasError,
     value: username,
@@ -56,17 +66,54 @@ export default function SignUpPage() {
   ) {
     formIsValid = true;
   }
+  const classes = useStyles();
 
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    const displayName = data.get("username");
+    setIsLoading(true);
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCbNNUGqurVX37l7L_lm6v9FbyaBT4f-q0",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        setIsLoading(false);
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication Failed!";
+            if (data && data.message && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        dispatch(loginHandler({ token: data.idToken, email: data.email }));
+        history.replace("/learn");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+    // const data = new FormData(event.currentTarget);
+    // const email = data.get("email");
+    // const password = data.get("password");
+    // const displayName = data.get("username");
 
-    dispatch(signupInitiate(email, password, displayName));
+    // dispatch(signupInitiate(email, password, displayName));
     // eslint-disable-next-line no-console
   };
 
@@ -153,6 +200,7 @@ export default function SignUpPage() {
                     id="password"
                     label="Password"
                     autoFocus
+                    type="password"
                     variant="filled"
                     error={passwordHasError}
                     helperText={passwordHasError && "Please enter a password."}
@@ -168,6 +216,7 @@ export default function SignUpPage() {
                     variant="filled"
                     id="Confirm Password"
                     label="Confirm Password"
+                    type="password"
                     name="Confirm Password"
                     autoComplete="Confirm Password"
                     error={confirmPasswordHasError}
@@ -183,12 +232,13 @@ export default function SignUpPage() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                  <Link href="/learn" to="/learn" />;
-                }}
                 disabled={!formIsValid}
               >
-                Sign Up
+                {isLoading ? (
+                  <CircularProgress size={20} className={classes.progress} />
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
               <Grid container>
                 <Grid item>

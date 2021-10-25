@@ -2,6 +2,11 @@ import * as types from "./actionTypes";
 import { auth } from "../../firebse";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 
+export const loginHandler = (userInfo) => ({
+  type: types.LOGIN,
+  payload: userInfo,
+});
+
 const signupStart = () => ({
   type: types.SIGNUP_START,
 });

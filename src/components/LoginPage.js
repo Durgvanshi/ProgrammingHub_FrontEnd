@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,8 +15,15 @@ import GTranslateIcon from "@material-ui/icons/GTranslate";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import useInput from "../hooks/use-input";
 import { useDispatch } from "react-redux";
-import { loginInitiate } from "../Redux/Action/actions";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { loginHandler } from "../Redux/Action/actions";
+import { makeStyles } from "@material-ui/core";
 const theme = createTheme();
+const useStyles = makeStyles({
+  progress: {
+    color: "#FFFFFF",
+  },
+});
 const buttonStyle = {
   textTransform: "none",
   display: "flex",
@@ -30,6 +37,8 @@ const buttonStyle = {
 };
 
 function LoginPage() {
+  const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const {
@@ -52,17 +61,54 @@ function LoginPage() {
   }
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    dispatch(loginInitiate(email, password));
-    // eslint-disable-next-line no-console
-    console.log(2);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    history.push("/learn");
+    setIsLoading(true);
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCbNNUGqurVX37l7L_lm6v9FbyaBT4f-q0",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        setIsLoading(false);
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication Failed!";
+            console.log(data);
+            if (data && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        dispatch(loginHandler({ token: data.idToken, email: data.email }));
+        history.replace("/learn");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+    // const data = new FormData(event.currentTarget);
+    // const email = data.get("email");
+    // const password = data.get("password");
+    // dispatch(loginInitiate(email, password));
+    // // eslint-disable-next-line no-console
+    // console.log(2);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+    // history.push("/learn");
   };
 
   return (
@@ -141,9 +187,15 @@ function LoginPage() {
                 disabled={!formIsValid}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                // onClick={() => history.push("/learn")}
               >
-                Login
+                {isLoading ? (
+                  <CircularProgress
+                    className={classes.progress}
+                    size={20}
+                  />
+                ) : (
+                  "Login"
+                )}
               </Button>
               <Grid container>
                 <Grid item xs>
