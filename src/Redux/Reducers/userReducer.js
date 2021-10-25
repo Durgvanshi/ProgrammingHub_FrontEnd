@@ -4,6 +4,8 @@ const initialState = {
   loading: false,
   currentUser: null,
   error: null,
+  token: "",
+  isLoggedIn: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -34,6 +36,13 @@ const userReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case types.LOGIN:
+      return {
+        ...state,
+        currentUser: action.payload.user,
+        token: action.payload.token,
+        isLoggedIn: true,
       };
     default:
       return state;

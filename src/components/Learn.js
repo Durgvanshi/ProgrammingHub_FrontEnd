@@ -10,6 +10,7 @@ import DisplayCourse from "./DisplayCourse";
 import { useSelector } from "react-redux";
 import HackathonsPage from "./HackathonsPage";
 import PracticePage from "./PracticePage";
+import Problems from "./Problems";
 
 const Learn = () => {
   const showModal = useSelector((state) => state.courses.showModal);
@@ -24,6 +25,7 @@ const Learn = () => {
       <Route path="/progress" component={ProgressPage} />
       <Route path="/hackathons" component={HackathonsPage} />
       <Route path="/practice" component={PracticePage} />
+      <Route path="/practice:id" component={Problems} />
     </div>
   );
 };

@@ -11,3 +11,5 @@ export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAIL = "LOGOUT_FAIL";
 export const showModalHandler = "showModalHandler";
 export const filterCourses = "filterCourses";
+export const LOGIN = "LOGIN";
+export const SIGNUP = "SIGNUP";
