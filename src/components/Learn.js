@@ -1,6 +1,6 @@
 import React from "react";
 import SideDrawer from "./SideDrawer";
-import { Route, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import TopNavigationBar from "./TopNavigationBar";
 import Courses from "./course/Courses";
 import Calendar from "./calendar/Calender";

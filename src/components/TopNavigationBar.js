@@ -1,7 +1,10 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Avatar, Divider, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { logoutHandler } from "../Redux/Action/actions";
 import Chip from "@material-ui/core/Chip";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   AppBar,
   Toolbar,
@@ -52,6 +55,8 @@ const chips = [
 ];
 
 const TopNavigationBar = () => {
+  const username = useSelector(state => state.user.currentUser);
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const history = useHistory();
@@ -74,7 +79,8 @@ const TopNavigationBar = () => {
     }
   }
   const logout = () => {
-    history.push("/");
+    dispatch(logoutHandler());
+    history.push("/login");
   };
 
   // return focus to the button when we transitioned from !open -> open
@@ -92,7 +98,7 @@ const TopNavigationBar = () => {
     <Fragment>
       <AppBar position="static" className={classes.appbar} elevation={0}>
         <Toolbar>
-          {chips.map((chip) => {
+          {/* {chips.map((chip) => {
             return (
               <Chip
                 label={chip.name}
@@ -100,7 +106,7 @@ const TopNavigationBar = () => {
                 color="primary"
               />
             );
-          })}
+          })} */}
           <Avatar
             style={{ marginLeft: "auto", background: "grey" }}
             onClick={handleToggle}
@@ -108,7 +114,7 @@ const TopNavigationBar = () => {
             aria-controls={open ? "menu-list-grow" : undefined}
             aria-haspopup="true"
           >
-            U
+            {username[0].toUpperCase()}
           </Avatar>
           <Popper
             open={open}

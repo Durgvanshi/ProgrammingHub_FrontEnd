@@ -93,7 +93,7 @@ function LoginPage() {
       })
       .then((data) => {
         dispatch(loginHandler({ token: data.idToken, email: data.email }));
-        history.replace("/learn");
+        history.replace("/");
       })
       .catch((err) => {
         alert(err.message);
@@ -109,17 +109,7 @@ function LoginPage() {
     //   password: data.get("password"),
     // });
     // history.push("/learn");
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    dispatch(loginInitiate(email, password));
-    // eslint-disable-next-line no-console
-    console.log(2);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    history.push("/");
+    
   };
 
   return (

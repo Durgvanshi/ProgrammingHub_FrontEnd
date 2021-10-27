@@ -103,7 +103,7 @@ export default function SignUpPage() {
       })
       .then((data) => {
         dispatch(loginHandler({ token: data.idToken, email: data.email }));
-        history.replace("/learn");
+        history.replace("/login");
       })
       .catch((error) => {
         alert(error.message);

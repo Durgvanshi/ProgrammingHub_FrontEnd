@@ -7,6 +7,10 @@ export const loginHandler = (userInfo) => ({
   payload: userInfo,
 });
 
+export const logoutHandler=()=>({
+  type: types.LOGOUT,
+})
+
 const signupStart = () => ({
   type: types.SIGNUP_START,
 });

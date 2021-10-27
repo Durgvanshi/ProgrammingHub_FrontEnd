@@ -48,7 +48,7 @@ const SideDrawer = () => {
     {
       id: 1,
       text: "Learn",
-      path: "/learn",
+      path: "/",
       icon: <LaptopChromebookSharpIcon />,
     },
     {
