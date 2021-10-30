@@ -13,9 +13,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Paper } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useInput from "../hooks/use-input";
+import useInput from "../../hooks/use-input";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { loginHandler } from "../Redux/Action/actions";
+import { loginHandler } from "../../Redux/Action/actions";
 import { makeStyles } from "@material-ui/core";
 
 const theme = createTheme();
@@ -103,7 +103,7 @@ export default function SignUpPage() {
       })
       .then((data) => {
         dispatch(loginHandler({ token: data.idToken, email: data.email }));
-        history.replace("/learn");
+        history.replace("/login");
       })
       .catch((error) => {
         alert(error.message);

@@ -13,3 +13,4 @@ export const showModalHandler = "showModalHandler";
 export const filterCourses = "filterCourses";
 export const LOGIN = "LOGIN";
 export const SIGNUP = "SIGNUP";
+export const LOGOUT = "LOGOUT";
