@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "../UI/Modal";
+import Modal from "../../UI/Modal";
 import {
   Button,
   FormControl,
@@ -10,9 +10,9 @@ import {
   RadioGroup,
   makeStyles,
 } from "@material-ui/core";
-import CourseItem from "./course/CourseItem";
-import { modalHandler } from "../Redux/Action/actions";
-import { filterCoursesHandler } from "../Redux/Action/actions";
+import CourseItem from "./CourseItem";
+import { modalHandler } from "../../Redux/Action/actions";
+import { filterCoursesHandler } from "../../Redux/Action/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles({

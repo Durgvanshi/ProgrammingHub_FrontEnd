@@ -6,7 +6,7 @@ import Courses from "./course/Courses";
 import Calendar from "./calendar/Calender";
 import Groups from "./Groups";
 import ProgressPage from "./ProgressPage";
-import DisplayCourse from "./DisplayCourse";
+import DisplayCourse from "./course/DisplayCourse";
 import { useSelector } from "react-redux";
 import HackathonsPage from "./HackathonsPage";
 import PracticePage from "./PracticePage";

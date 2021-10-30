@@ -2,6 +2,15 @@ import * as types from "./actionTypes";
 import { auth } from "../../firebse";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 
+
+const calculateRemainingTime = (expirationTime) => {
+  const currentTime = new Date().getTime();
+  const adjustedExpirationTime = new Date(expirationTime).getTime();
+  const remainingTime = adjustedExpirationTime - currentTime;
+
+  return remainingTime;
+};
+
 export const loginHandler = (userInfo) => ({
   type: types.LOGIN,
   payload: userInfo,

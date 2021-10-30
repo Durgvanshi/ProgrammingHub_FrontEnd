@@ -80,7 +80,9 @@ const TopNavigationBar = () => {
   }
   const logout = () => {
     dispatch(logoutHandler());
-    history.push("/login");
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    history.replace("/login");
   };
 
   // return focus to the button when we transitioned from !open -> open

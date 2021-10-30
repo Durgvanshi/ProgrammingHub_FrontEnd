@@ -2,8 +2,8 @@ import { KeyboardReturnSharp } from "@material-ui/icons";
 import * as types from "../Action/actionTypes";
 
 const initialState = {
-  currentUser: null,
-  token: "",
+  currentUser: localStorage.getItem("email") || null,
+  token: localStorage.getItem("token") || "",
   isLoggedIn: false,
 };
 
@@ -43,13 +43,13 @@ const userReducer = (state = initialState, action) => {
         token: action.payload.token,
         isLoggedIn: true,
       };
-      case types.LOGOUT:
-        return{
-          ...state,
-          currentUser:null,
-          token:"",
-          isLoggedIn:false,
-        }
+    case types.LOGOUT:
+      return {
+        ...state,
+        currentUser: null,
+        token: "",
+        isLoggedIn: false,
+      };
     default:
       return state;
   }

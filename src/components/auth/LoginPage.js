@@ -13,11 +13,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import GTranslateIcon from "@material-ui/icons/GTranslate";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import useInput from "../hooks/use-input";
+import useInput from "../../hooks/use-input";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { loginHandler } from "../Redux/Action/actions";
+import { loginHandler } from "../../Redux/Action/actions";
 import { makeStyles } from "@material-ui/core";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GithubAuthProvider } from "firebase/auth";
+
 const theme = createTheme();
 const useStyles = makeStyles({
   progress: {
@@ -37,6 +40,9 @@ const buttonStyle = {
 };
 
 function LoginPage() {
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const providerGitHub = new GithubAuthProvider();
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
@@ -59,6 +65,60 @@ function LoginPage() {
   if (emailIsValid && passwordIsValid) {
     formIsValid = true;
   }
+  const googleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        localStorage.setItem("token", token);
+
+        const user = result.user;
+        console.log(user);
+        dispatch(
+          loginHandler({
+            token: token,
+            email: user.displayName,
+            expirationTime: null,
+          })
+        );
+        history.replace("/");
+        console.log("successful"); 
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+        const email = error.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
+  const GitHubAuth = () => {
+    signInWithPopup(auth, providerGitHub)
+      .then((result) => {
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        localStorage.setItem("token", token);
+        const user = result.user;
+        console.log(user);
+        dispatch(
+          loginHandler({
+            token: token,
+            email: user.displayName,
+            expirationTime: null,
+          })
+        );
+        history.replace("/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.email;
+        alert(errorMessage);
+        const credential = GithubAuthProvider.credentialFromError(error);
+      });
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -92,24 +152,23 @@ function LoginPage() {
         }
       })
       .then((data) => {
-        dispatch(loginHandler({ token: data.idToken, email: data.email }));
+        const expirationTime = new Date(
+          new Date().getTime() + +data.expiresIn * 1000
+        );
+        localStorage.setItem("token", data.idToken);
+        localStorage.setItem("email", data.email);
+        dispatch(
+          loginHandler({
+            token: data.idToken,
+            email: data.email,
+            expirationTime: expirationTime.toISOString(),
+          })
+        );
         history.replace("/");
       })
       .catch((err) => {
         alert(err.message);
       });
-    // const data = new FormData(event.currentTarget);
-    // const email = data.get("email");
-    // const password = data.get("password");
-    // dispatch(loginInitiate(email, password));
-    // // eslint-disable-next-line no-console
-    // console.log(2);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
-    // history.push("/learn");
-    
   };
 
   return (
@@ -190,10 +249,7 @@ function LoginPage() {
                 sx={{ mt: 3, mb: 2 }}
               >
                 {isLoading ? (
-                  <CircularProgress
-                    className={classes.progress}
-                    size={20}
-                  />
+                  <CircularProgress className={classes.progress} size={20} />
                 ) : (
                   "Login"
                 )}
@@ -218,6 +274,7 @@ function LoginPage() {
                   startIcon={<GTranslateIcon />}
                   style={buttonStyle}
                   fullWidth
+                  onClick={googleAuth}
                 >
                   Continue with Google
                 </Button>
@@ -228,6 +285,7 @@ function LoginPage() {
                   startIcon={<GitHubIcon />}
                   style={buttonStyle}
                   fullWidth
+                  onClick={GitHubAuth}
                 >
                   Continue with GitHub
                 </Button>
