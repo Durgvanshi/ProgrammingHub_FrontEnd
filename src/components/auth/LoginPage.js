@@ -74,6 +74,7 @@ function LoginPage() {
 
         const user = result.user;
         console.log(user);
+        localStorage.setItem("user", user.displayName);
         dispatch(
           loginHandler({
             token: token,
@@ -81,8 +82,9 @@ function LoginPage() {
             expirationTime: null,
           })
         );
+
         history.replace("/");
-        console.log("successful"); 
+        console.log("successful");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -102,6 +104,7 @@ function LoginPage() {
         localStorage.setItem("token", token);
         const user = result.user;
         console.log(user);
+        localStorage.setItem("user", user.displayName);
         dispatch(
           loginHandler({
             token: token,

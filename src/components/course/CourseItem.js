@@ -23,6 +23,7 @@ const useStyles = makeStyles({
 const CourseItem = (props) => {
   const selectedCourseHandler = (selectedCourse) => {
     const userChoice = { ...selectedCourse, date: new Date().toDateString() };
+    console.log(userChoice);
   };
   const classes = useStyles();
   return (

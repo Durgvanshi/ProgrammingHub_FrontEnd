@@ -2,7 +2,7 @@ import { KeyboardReturnSharp } from "@material-ui/icons";
 import * as types from "../Action/actionTypes";
 
 const initialState = {
-  currentUser: localStorage.getItem("email") || null,
+  currentUser: localStorage.getItem("user") || null,
   token: localStorage.getItem("token") || "",
   isLoggedIn: false,
 };

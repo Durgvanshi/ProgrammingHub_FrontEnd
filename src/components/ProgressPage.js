@@ -146,6 +146,25 @@ const ProgressPage = () => {
             </CardContent>
           </Card>
         </Grid>
+        <Grid item spacing={3} md={3}>
+          <Card elevation={0} variant="outlined" className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" align="center">
+                Tests Completed
+              </Typography>
+              <Typography variant="h2" align="center">
+                0
+              </Typography>
+              <Button
+                variant="outlined"
+                color="secondary"
+                className={classes.btn}
+              >
+                Start Tests
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </div>
   );

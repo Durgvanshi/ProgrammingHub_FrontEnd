@@ -55,7 +55,7 @@ const chips = [
 ];
 
 const TopNavigationBar = () => {
-  const username = useSelector(state => state.user.currentUser);
+  const username = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -80,8 +80,8 @@ const TopNavigationBar = () => {
   }
   const logout = () => {
     dispatch(logoutHandler());
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
     history.replace("/login");
   };
 
