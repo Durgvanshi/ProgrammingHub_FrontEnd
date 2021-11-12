@@ -3,7 +3,8 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
+// import Link as MUILink from "@mui/material/Link";
+import { Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -74,6 +75,7 @@ function LoginPage() {
 
         const user = result.user;
         console.log(user);
+        localStorage.setItem("user", user.displayName);
         dispatch(
           loginHandler({
             token: token,
@@ -81,8 +83,9 @@ function LoginPage() {
             expirationTime: null,
           })
         );
+
         history.replace("/");
-        console.log("successful"); 
+        console.log("successful");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -102,6 +105,7 @@ function LoginPage() {
         localStorage.setItem("token", token);
         const user = result.user;
         console.log(user);
+        localStorage.setItem("user", user.displayName);
         dispatch(
           loginHandler({
             token: token,
@@ -256,14 +260,10 @@ function LoginPage() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
+                  <Link to="#">Forgot password?</Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/signup" variant="body2" to="/signup">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
                 </Grid>
               </Grid>
             </Box>
