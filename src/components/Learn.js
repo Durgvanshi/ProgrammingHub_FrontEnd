@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import HackathonsPage from "./HackathonsPage";
 import PracticePage from "./PracticePage";
 import Problems from "./Problems";
+import Leaderboard from "./Leaderboard.js";
 
 const Learn = () => {
   const showModal = useSelector((state) => state.courses.showModal);
@@ -26,6 +27,7 @@ const Learn = () => {
       <Route path="/hackathons" component={HackathonsPage} />
       <Route path="/practice" component={PracticePage} />
       <Route path="/practice:id" component={Problems} />
+      <Route path="/leaderboard" component={Leaderboard} />
     </div>
   );
 };
