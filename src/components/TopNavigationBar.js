@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Avatar, Divider, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { logoutHandler } from "../Redux/Action/actions";
-import Chip from "@material-ui/core/Chip";
+//import Chip from "@material-ui/core/Chip";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -81,7 +81,7 @@ const TopNavigationBar = () => {
   const logout = () => {
     dispatch(logoutHandler());
     localStorage.removeItem("token");
-    localStorage.removeItem("email");
+    localStorage.removeItem("user");
     history.replace("/login");
   };
 
