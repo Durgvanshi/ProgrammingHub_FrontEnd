@@ -14,3 +14,5 @@ export const filterCourses = "filterCourses";
 export const LOGIN = "LOGIN";
 export const SIGNUP = "SIGNUP";
 export const LOGOUT = "LOGOUT";
+export const ADD_COURSE = "ADD_COURSE";
+export const SNACKBAR = "SNACKBAR";

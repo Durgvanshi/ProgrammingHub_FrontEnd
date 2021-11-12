@@ -5,7 +5,8 @@ const initialState = {
   heading: "",
   items: [],
   courseType: null,
-  filteredItems:[],
+  filteredItems: [],
+  responseSnackbar: false,
 };
 
 const courseReducer = (state = initialState, action) => {
@@ -16,8 +17,8 @@ const courseReducer = (state = initialState, action) => {
         showModal: !state.showModal,
         items: action.payload.courses,
         heading: action.payload.heading,
-        filteredItems:action.payload.filteredItems,
-        courseType:action.payload.courseType,
+        filteredItems: action.payload.filteredItems,
+        courseType: action.payload.courseType,
       };
     case types.filterCourses:
       return {
@@ -25,6 +26,12 @@ const courseReducer = (state = initialState, action) => {
         courseType: action.payload.courseType,
         filteredItems: action.payload.filteredItems,
       };
+    case types.SNACKBAR: {
+      return {
+        ...state,
+        responseSnackbar: !state.responseSnackbar,
+      };
+    }
     default:
       return state;
   }

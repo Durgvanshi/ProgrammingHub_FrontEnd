@@ -2,7 +2,6 @@ import * as types from "./actionTypes";
 import { auth } from "../../firebse";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 
-
 const calculateRemainingTime = (expirationTime) => {
   const currentTime = new Date().getTime();
   const adjustedExpirationTime = new Date(expirationTime).getTime();
@@ -11,14 +10,23 @@ const calculateRemainingTime = (expirationTime) => {
   return remainingTime;
 };
 
+export const showSnackbar = () => ({
+  type: types.SNACKBAR,
+});
+
+export const addCourseHandler = (courseInfo) => ({
+  type: types.ADD_COURSE,
+  payload: courseInfo,
+});
+
 export const loginHandler = (userInfo) => ({
   type: types.LOGIN,
   payload: userInfo,
 });
 
-export const logoutHandler=()=>({
+export const logoutHandler = () => ({
   type: types.LOGOUT,
-})
+});
 
 const signupStart = () => ({
   type: types.SIGNUP_START,

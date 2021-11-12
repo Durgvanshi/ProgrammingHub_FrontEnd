@@ -5,6 +5,7 @@ const initialState = {
   currentUser: localStorage.getItem("user") || null,
   token: localStorage.getItem("token") || "",
   isLoggedIn: false,
+  courseInfo: {},
 };
 
 const userReducer = (state = initialState, action) => {
@@ -49,6 +50,11 @@ const userReducer = (state = initialState, action) => {
         currentUser: null,
         token: "",
         isLoggedIn: false,
+      };
+    case types.ADD_COURSE:
+      return {
+        ...state,
+        courseInfo: action.payload.courseInfo,
       };
     default:
       return state;
