@@ -6,6 +6,10 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { modalHandler } from "../../Redux/Action/actions";
+import { showSnackbar } from "../../Redux/Action/actions";
 
 const useStyles = makeStyles({
   type: {
@@ -21,8 +25,32 @@ const useStyles = makeStyles({
   },
 });
 const CourseItem = (props) => {
-  const selectedCourseHandler = (selectedCourse) => {
-    const userChoice = { ...selectedCourse, date: new Date().toDateString() };
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const selectedCourseHandler = async (selectedCourse) => {
+    const userChoice = {
+      ...selectedCourse,
+      date: new Date().toDateString(),
+      token: token,
+      currentUser: currentUser,
+    };
+    await fetch(
+      "https://programminghub-98a05-default-rtdb.asia-southeast1.firebasedatabase.app/userInfo.json",
+      {
+        method: "POST",
+        body: JSON.stringify(userChoice),
+      }
+    );
+    dispatch(
+      modalHandler({
+        items: [],
+        heading: "null",
+        courseType: null,
+        filteredItems: [],
+      })
+    );
+    dispatch(showSnackbar());
     console.log(userChoice);
   };
   const classes = useStyles();

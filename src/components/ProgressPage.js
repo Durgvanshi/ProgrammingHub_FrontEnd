@@ -156,8 +156,8 @@ const ProgressPage = () => {
                 0
               </Typography>
               <Button
-                variant="outlined"
-                color="secondary"
+                variant="contained"
+                color="primary"
                 className={classes.btn}
               >
                 Start Tests

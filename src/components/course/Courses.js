@@ -11,6 +11,8 @@ import { drawerWidth } from "../SideDrawer";
 import { useDispatch } from "react-redux";
 import { modalHandler } from "../../Redux/Action/actions";
 import courseInfo from "./CourseInfo";
+import { useSelector } from "react-redux";
+
 import CloseIcon from "@material-ui/icons/Close";
 
 const courses = [
@@ -74,8 +76,9 @@ const useStyles = makeStyles({
 });
 
 const Courses = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-
+  const showSnackbar = useSelector((state) => state.responseSnackbar);
   const handleClick = () => {
     setOpen(true);
   };
@@ -85,9 +88,8 @@ const Courses = () => {
       return;
     }
 
-    setOpen(false);
+    dispatch(showSnackbar());
   };
-  const dispatch = useDispatch();
   const classes = useStyles();
   const courseClickedHandler = (heading) => {
     const findCourse = courseInfo.find((course) => course.heading === heading);
@@ -132,32 +134,34 @@ const Courses = () => {
           </Grid>
         );
       })}
-      <Button onClick={handleClick}>Open simple snackbar</Button>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Course Added."
-        action={
-          <React.Fragment>
-            <Button color="secondary" size="small" onClick={handleClose}>
-              UNDO
-            </Button>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleClose}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
+      {/* <Button onClick={handleClick}>Open simple snackbar</Button> */}
+      {showSnackbar && (
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          open={showSnackbar}
+          autoHideDuration={12000}
+          onClose={handleClose}
+          message="Course Added."
+          action={
+            <React.Fragment>
+              <Button color="secondary" size="small" onClick={handleClose}>
+                UNDO
+              </Button>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+        />
+      )}
     </Grid>
   );
 };
